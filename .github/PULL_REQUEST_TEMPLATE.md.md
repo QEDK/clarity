@@ -3,7 +3,7 @@
 * [ ] Feature Request 
 * [ ] Enhancement
 
-## Sumarry 
+## summary 
 <!-- Give the summary of the problem you faced -->
 
 ## Error Log if applicable 
