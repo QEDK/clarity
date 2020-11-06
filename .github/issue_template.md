@@ -1,5 +1,5 @@
 ## Issue Fix
-Fixes #Issue_Number
+Fixes #
 
 ## Screenshots (applicable for front-end issues)
 <!--Please Add Screenshots or Screen Recordings which show the changes that you made.-->
