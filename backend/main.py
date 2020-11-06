@@ -14,7 +14,7 @@ import databases
 
 host_server = os.environ.get('host_server', "localhost")
 db_server_port = urllib.parse.quote_plus(str(os.environ.get('db_server_port', '5432')))
-# setup the below database in your localmachine 
+# credentials of the postgre db instance: 
 database_name = os.environ.get('database_name', 'fastapidbname')
 db_username = urllib.parse.quote_plus(str(os.environ.get('db_username', 'postgres')))
 db_password = urllib.parse.quote_plus(str(os.environ.get('db_password', 'password')))
@@ -66,11 +66,17 @@ async def startup():
 async def shutdown():
     await database.disconnect()
 
-@app.post("/api/add_user", response_model=Journal)
+@app.post("/api/add_note", response_model=Journal)
 async def add_user(journal: Journal_in):
     query = user_journal.insert().values(email = journal.email, text_journal = journal.text_journal, journal_url = journal.email, time = journal.time)
     last_record_id = await database.execute(query)
     return {** journal.dict(), "id": last_record_id}
+
+@app.get("/api/get_note/{email}", response_model=List[Journal])
+async def read_journal(email: str):
+    query = user_journal.select().where(user_journal.c.email == email)
+    return await database.fetch_all(query)
+
 
 
 
