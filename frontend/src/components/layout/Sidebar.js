@@ -32,7 +32,7 @@ const Sidebar = () => {
 
             <div className="sidebar__middle"aria-label='Show/Hide Projects'  onClick={()=>setShowProjects(!showProjects)} onKeyDown={()=>setShowProjects(!showProjects)} tabIndex={0} role='button'>
                 <span><FaChevronDown className={!showProjects ? 'hidden-projects' : undefined} /></span>
-                <h2>Projects</h2>
+                <h2>Lists</h2>
             </div>
 
             <ul className="sidebar__projects">
