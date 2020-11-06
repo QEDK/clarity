@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { FaRegListAlt, FaRegCalendarAlt } from 'react-icons/fa';
+import { FaRegListAlt } from 'react-icons/fa';
 import moment from 'moment';
 import { firebase } from '../firebase'
 import { useSelectedProjectValue } from '../context';
@@ -91,8 +91,6 @@ const AddTask = ({ showAddTaskMain = true, shouldShowMain = false, showQuickAddT
                     )}
                     <span className='add-task__project' data-testid='show-project-overlay' onClick={() => setShowProjectOverlay(!showProjectOverlay)}
                         onKeyDown={() => setShowProjectOverlay(!showProjectOverlay)} role='button' tabIndex={0}><FaRegListAlt /></span>
-                    <span className='add-task__date' data-testid='show-task-date-overlay' onClick={() => setShowTaskDate(!showTaskDate)}
-                        onKeyDown={() => setShowTaskDate(!showTaskDate)} role='button' tabIndex={0}><FaRegCalendarAlt /></span>
                 </div>
             )}
         </div>
