@@ -66,18 +66,26 @@ async def startup():
 async def shutdown():
     await database.disconnect()
 
-@app.post("/api/add_note", response_model=Journal)
-async def add_user(journal: Journal_in):
-    query = user_journal.insert().values(email = journal.email, text_journal = journal.text_journal, journal_url = journal.email, time = journal.time)
+@app.post("/api/add_note")
+async def add_note(journal: Journal_in):
+    check_user_query = user_journal.select().where(user_journal.c.email == journal.email)
+    user = await database.fetch_one(check_user_query)
+    if user == None:
+        url = generate(size=36)
+    else:
+        url = user.get("journal_url")
+    query = user_journal.insert().values(email = journal.email, text_journal = journal.text_journal, journal_url = url, time = journal.time)
     last_record_id = await database.execute(query)
     return {** journal.dict(), "id": last_record_id}
 
-@app.get("/api/get_note/{email}", response_model=List[Journal])
-async def read_journal(email: str):
+@app.get("/api/get_note/{email}")
+async def get_note(email: str):
     query = user_journal.select().where(user_journal.c.email == email)
-    return await database.fetch_all(query)
+    userlist = await database.fetch_all(query)
+    return userlist
 
-
-
-
-
+@app.get("/api/get_from_url/{url}") 
+async def get_from_url(url: str):
+    query = user_journal.select().where(user_journal.c.journal_url == url)
+    userlist = await database.fetch_all(query)
+    return userlist
