@@ -9,5 +9,5 @@
 ## Error Log if applicable 
 <!-- Paste the error logs here -->
 
-<!-- Please make sure you have added relevent labels while opening the issues -->
+<!-- Please make sure you have added relevant labels while opening the issues -->
 
