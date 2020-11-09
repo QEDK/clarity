@@ -1,13 +1,13 @@
-## Issue type 
-* [ ] Bug 
-* [ ] Feature Request 
-* [ ] Enhancement
+## Issue Fix
+Fixes #
 
-## Summary 
-<!-- Give the summary of the problem you faced -->
+## Screenshots (applicable for front-end issues)
+<!--Please Add Screenshots or Screen Recordings which show the changes that you made.-->
 
-## Error Log if applicable 
-<!-- Paste the error logs here -->
+## Description
+<!--Please Add Summary of the changes that you have made.-->
 
-<!-- Please make sure you have added relevant labels while opening the issues -->
+## Reviewers
+<!--Ping specific reviewers-->
+
 
