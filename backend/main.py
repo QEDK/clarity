@@ -10,11 +10,12 @@ from pydantic import BaseModel
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware 
 from typing import List
+from nanoid import generate
 import databases
 
 host_server = os.environ.get('host_server', "localhost")
 db_server_port = urllib.parse.quote_plus(str(os.environ.get('db_server_port', '5432')))
-# credentials of the postgre db instance: 
+# credentials of the postgres db instance: 
 database_name = os.environ.get('database_name', 'fastapidbname')
 db_username = urllib.parse.quote_plus(str(os.environ.get('db_username', 'postgres')))
 db_password = urllib.parse.quote_plus(str(os.environ.get('db_password', 'password')))
