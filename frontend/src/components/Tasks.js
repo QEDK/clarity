@@ -22,7 +22,7 @@ const Tasks = () => {
     }
 
     useEffect(()=>{
-        document.title = `${projectName}: Todoist`
+        document.title = `${projectName}: Clarity`
     })
 
     console.log('tasks',tasks)
