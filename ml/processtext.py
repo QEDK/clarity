@@ -3,8 +3,6 @@ import asyncio
 import json
 import keras.preprocessing
 import numpy as np
-import os
-import logging
 import re
 import spacy
 import sys
@@ -18,11 +16,12 @@ import warnings
 warnings.filterwarnings("ignore", category=UserWarning)
 
 
-class processText():
+class ProcessText():
     def __init__(self):
         self.nlp = spacy.load("en_core_web_md")
         self.model = tf.keras.models.load_model("model.h5")
         self.uncontracter = RegexpReplacer()
+        self.unpunctuator = re.compile(r"[!#$%&'()*+,-./:;<=>?@[\]^_`{|}~]")
         self.tokenizer = keras.preprocessing.text.Tokenizer(num_words=None)
         self.tokenizer.fit_on_texts(list(np.genfromtxt("vocab.txt", dtype="str", delimiter="\n")))
         self.sentiments = [
@@ -44,10 +43,10 @@ class processText():
     async def process(self, text: str):
         self.doc = self.nlp(text)
         self.blob = TextBlob(text)
-        fmt_ents, (tf_idf, word_associations), sentiment = await asyncio.gather(
+        sentiment, fmt_ents, (tf_idf, word_associations) = await asyncio.gather(
+            self.get_sentiment(self.doc, self.blob),
             self.get_formatted_entities(self.doc),
-            self.get_word_associations(self.doc),
-            self.get_sentiment(self.doc, self.blob)
+            self.get_word_associations(self.doc)
         )
         return json.dumps({
             "ents": fmt_ents,
@@ -59,19 +58,18 @@ class processText():
     async def get_formatted_entities(self, doc: spacy.tokens.Doc):
         return displacy.render(doc, style="ent")
 
-    async def get_tfidf(self, doc: spacy.tokens.Doc):
-        vectorizer = TfidfVectorizer(
-            ngram_range=(1, 1), max_features=10,
-            stop_words=self.nlp.Defaults.stop_words)
-        vectorizer.fit_transform([span.text for span in doc.sents])
-        tf_idf = dict(
-            feature for feature in zip(vectorizer.get_feature_names(), vectorizer.idf_)
-            if not feature[0].isnumeric()
-        )
-        return tf_idf
-
     async def get_word_associations(self, doc: spacy.tokens.Doc):
-        tf_idf = await self.get_tfidf(doc)
+        async def get_tfidf():
+            vectorizer = TfidfVectorizer(
+                ngram_range=(1, 1), max_features=10,
+                stop_words=self.nlp.Defaults.stop_words)
+            vectorizer.fit_transform([span.text for span in doc.sents])
+            tf_idf = dict(
+                feature for feature in zip(vectorizer.get_feature_names(), vectorizer.idf_)
+                if not feature[0].isnumeric()
+            )
+            return tf_idf
+        tf_idf = await get_tfidf()
         matcher = Matcher(self.nlp.vocab)
         for token in tf_idf.keys():  # transform tokens to similarity matrix
             matcher.add(token, None, [{"LOWER": token}])
@@ -88,7 +86,8 @@ class processText():
         async def sanitize(text: str):
             text = text.lower()  # lowercase string
             text = str(blob.correct())  # spellcheck
-            text = self.uncontracter.replace(text)  # replace contractions with regex
+            text = await self.uncontracter.replace(text)  # replace contractions with regex
+            text = self.unpunctuator.sub("", text)
             text = " ".join(
                 [word for word in text.split() if word not in self.nlp.Defaults.stop_words]
             )  # remove stopwords
@@ -133,7 +132,7 @@ class RegexpReplacer():
     def __init__(self, patterns=replacement_patterns):
         self.patterns = [(re.compile(regex), repl) for (regex, repl) in patterns]
 
-    def replace(self, text):
+    async def replace(self, text):
         s = text
         for (pattern, repl) in self.patterns:
             s = re.sub(pattern, repl, s)
@@ -141,9 +140,7 @@ class RegexpReplacer():
 
 
 if __name__ == "__main__":
-    os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
-    logging.getLogger("tensorflow").setLevel(logging.FATAL)
-    proc = processText()
+    proc = ProcessText()
     import time
     start = time.perf_counter()
     print(asyncio.run(proc.process(sys.argv[1])))
