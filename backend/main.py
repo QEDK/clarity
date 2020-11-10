@@ -1,20 +1,20 @@
-import urllib
+import databases
 import os
 import sqlalchemy
-from pydantic import BaseModel
+import urllib
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from ml.processtext import ProcessText
 from nanoid import generate
-import databases
+from pydantic import BaseModel
 
-host_server = os.environ.get('host_server', "localhost")
-db_server_port = urllib.parse.quote_plus(str(os.environ.get('db_server_port', '5432')))
-# credentials of the postgres db instance:
-database_name = os.environ.get('database_name', 'fastapidbname')
-db_username = urllib.parse.quote_plus(str(os.environ.get('db_username', 'postgres')))
-db_password = urllib.parse.quote_plus(str(os.environ.get('db_password', 'password')))
-DATABASE_URL = 'postgresql://{}:{}@{}:{}/{}'.format(
-    db_username, db_password, host_server, db_server_port, database_name)
+db_server = os.environ.get("db_server", "localhost")
+db_server_port = urllib.parse.quote_plus(str(os.environ.get("db_server_port", "5432")))
+# Credentials of the PostgreSQL instance:
+db_name = os.environ.get("db_name", "fastapidbname")
+db_username = urllib.parse.quote_plus(str(os.environ.get("db_username", "postgres")))
+db_password = urllib.parse.quote_plus(str(os.environ.get("db_password", "password")))
+db_url = f"postgresql://{db_username}:{db_password}@{db_server}:{db_server_port}/{db_name}"
 
 metadata = sqlalchemy.MetaData()
 
@@ -28,7 +28,7 @@ user_journal = sqlalchemy.Table(
     sqlalchemy.Column("time", sqlalchemy.String)
 )
 
-engine = sqlalchemy.create_engine(DATABASE_URL, pool_size=5, max_overflow=0)
+engine = sqlalchemy.create_engine(db_url, pool_size=5, max_overflow=0)
 
 metadata.create_all(engine)
 
@@ -55,12 +55,13 @@ app.add_middleware(
     allow_credentials=True
 )
 
-database = databases.Database(DATABASE_URL)
+database = databases.Database(db_url)
 
 
 @app.on_event("startup")
 async def startup():
     await database.connect()
+    nlp = ProcessText()  # noqa: init the ML model
 
 
 @app.on_event("shutdown")
