@@ -16,7 +16,7 @@ It's sweet and simple... Follow the below steps:
 
 ## What the Tech Stack ? 
 
-![Google Cloud](Media/social-icon-google-cloud-1200-630.png =630x315)
+![Google Cloud](Media/social-icon-google-cloud-1200-630.png =630x)
 
 ![Fast API](Media/logo-teal.png)
 
