@@ -15,6 +15,7 @@ class Tasks extends Component {
         };
     }
     componentDidMount(tasks) {
+        document.title = 'Clarity'
         const base_url = process.env.REACT_APP_BASE_URL
         const email = "shahpreetk@gmail.com"
         axios.get(`${base_url}/get_note/${email}`)
@@ -60,7 +61,6 @@ class Tasks extends Component {
         const {tasks} = this.state
         return (
             <div className='tasks' data-testid='tasks'>
-                {/* <h2 data-testid='project-name'>{projectName}</h2> */}
 
                 <ul className='tasks__list'>
                     {
