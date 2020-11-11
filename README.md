@@ -16,6 +16,6 @@ It's sweet and simple... Follow the below steps:
 
 ## What the Tech Stack ? 
 
-![Google Cloud](Media/social-icon-google-cloud-1200-630.png)
-![Fast API](Media/logo-teal.png)
-![ReactJS](Media/1280px-React-icon.svg.png)
+<img src="Media/social-icon-google-cloud-1200-630.png" alt="drawing" width="200"/>
+<img src="Media/logo-teal.png" alt="drawing" width="200"/>
+<img src="Media/1280px-React-icon.svg.png" alt="drawing" width="200"/>
