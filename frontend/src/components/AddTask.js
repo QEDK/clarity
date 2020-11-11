@@ -108,7 +108,7 @@ const AddTask = ({ showAddTaskMain = true, shouldShowMain = false, showQuickAddT
                     )}
                     <ProjectOverlay setProject={setProject} showProjectOverlay={showProjectOverlay} setShowProjectOverlay={setShowProjectOverlay} />
                     <TaskDate setTaskDate={setTaskDate} showTaskDate={showTaskDate} setShowTaskDate={setShowTaskDate} />
-                    <textarea className='add-task__content' aria-label='Journal Entry' data-testid='add-task-content' type='text' value={task} onChange={e => setTask(e.target.value)} />
+                    <textarea className='add-task__content' style={{height:'100px'}} aria-label='Journal Entry' data-testid='add-task-content' type='text' value={task} onChange={e => setTask(e.target.value)} />
                     <button className='add-task__submit' data-testid='add-task'
                         onClick={() => showQuickAddTask ? addTask() && setShowQuickAddTask(false)
                             : addTask()}
