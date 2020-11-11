@@ -1,9 +1,9 @@
-## Getting Started
-`ml` directory is intended to be imported as an entire module (hence the `__init__.py`). To get started with making predictions, it's simple!
+## 🚀 Getting Started
+`ml` directory is intended to be imported as an entire module (hence the `__init__.py`). To get started with making predictions, it's simple! 🌟
 
 ```bash
 $ git clone git@github.com:QEDK/clarity.git
-$ cd ml
+$ cd clarity/ml
 $ pip3 install -r requirements.txt
 ```
 
@@ -17,7 +17,7 @@ result = await nlp.process("Some text you need to analyze!")
 # This module uses async so you can enable concurrency in your real-time applications ;)
 ```
 
-## Predictions
+## 🔍 Predictions
 The module gives you a prediction in JSON format:
 ```json
 {
@@ -55,7 +55,7 @@ Polarity is assigned on a scale of `[-1, 1]` (most negative to most positive). S
 of `[0, 1]` (objective to subjective). These are rule-based scores depending on presence of certain polarizing,
 sentimental words.
 
-## Model
+## 🧬 Model
 We have used Keras to construct the machine learning model for emotion analysis. It is a bi-directional LSTM model
 trained on 40,000 tweets with crowdsourced mood data. As expected, a lot of data cleaning is required before the
 data is usable for training and prediction, in order:
@@ -72,14 +72,14 @@ and finally get a probablistic outcome from the `softmax` layer.
 
 The entirety of the training data comes to ~1 GiB and we get a model of ~86 MB.
 
-### Architecture
+### 🏢 Architecture
 ![Architecture diagram](https://i.imgur.com/J2Ll0vl.png)
 
 The model has over 13,738,513 parameters (4,689,013 trainable + 9,049,500 untrainable) and will take a significant
 time to train without a TPU/GPU. The model tries to strike a balance between efficiency and performance, and while
 training is slow, mood analysis of an average paragraph takes <1 second on a 2017 Core i5 processor.
 
-### Retraining
+### ⏮️ Retraining
 You can easily retrain the model using the `model.h5` file available in the module.
 ```python
 import keras
@@ -93,7 +93,7 @@ or if you just want to tinker around. Comments have been provided to make things
 Please note that the datasets are imported from Kaggle and need to be set up either in a kernel or locally.
 There are also additional dependencies on `tweet-preprocessor`, `pandas` and `emoji`.
 
-## Getting Started: Advanced Guide
+## 🥽 Getting Started: Advanced Guide
 If you've read everything above and are ready to tinker, we have additional feature so you can get the maximum
 performance. The default `nlp.process()` makes `asyncio` run the analysis functions concurrently, however
 this is bottlenecked by the Python GIL, you can easily get better performance using `multiprocessing` and spinning
