@@ -2,7 +2,6 @@ import {useState, useEffect} from 'react'
 import moment from 'moment'
 import {firebase} from '../firebase'
 import {collatedTasksExist} from '../helpers'
-import axios from 'axios'
 
 export  const useTasks = selectedProject => {
     const [tasks, setTasks] = useState([])
@@ -51,23 +50,12 @@ export const useProjects = () => {
     const [projects, setProjects] = useState([]);
 
     useEffect(()=>{
-        // firebase
-        //     .firestore()
-        //     .collection('projects')
-        //     .where('userId', '==', 'c422780d6077477594639749729eef36')
-        //     .orderBy('projectId')
-        //     .get()
-        //     .then(snapshot=>{
-        //         const allProjects = snapshot.docs.map(project=>({
-        //             ...project.data(),
-        //             docId:project.id,
-        //         }));
-
-        //         if (JSON.stringify(allProjects) !== JSON.stringify(projects)){
-        //             setProjects(allProjects);
-        //         }
-        //     });
-        axios.get('https://60a4c101b9b5.ngrok.io/api/get_note/shahpreetk@gmail.com')
+        firebase
+            .firestore()
+            .collection('projects')
+            .where('userId', '==', 'c422780d6077477594639749729eef36')
+            .orderBy('projectId')
+            .get()
             .then(snapshot=>{
                 const allProjects = snapshot.docs.map(project=>({
                     ...project.data(),
@@ -78,6 +66,7 @@ export const useProjects = () => {
                     setProjects(allProjects);
                 }
             });
+
     },[projects]);
 
     return {projects, setProjects};

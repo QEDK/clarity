@@ -1,49 +1,81 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect, Component } from 'react'
 import Checkbox from './Checkbox'
-import {useTasks} from '../hooks'
-import {collatedTasks} from '../constants'
-import {getTitle, getCollatedTitle, collatedTasksExist} from '../helpers'
-import {useSelectedProjectValue, useProjectsValue} from '../context'
+// import {useTasks} from '../hooks'
+// import { collatedTasks } from '../constants'
+// import { getTitle, getCollatedTitle, collatedTasksExist } from '../helpers'
+// import { useSelectedProjectValue, useProjectsValue } from '../context'
 import AddTask from './AddTask'
+import axios from 'axios'
 
-const Tasks = () => {
-    const {selectedProject} = useSelectedProjectValue()
-    const {projects} = useProjectsValue()
-    const {tasks} = useTasks(selectedProject)
-
-    let projectName = ''
-
-    if (projects && selectedProject && !collatedTasksExist(selectedProject)){
-        projectName = getTitle(projects, selectedProject).name
+class Tasks extends Component {
+    constructor() {
+        super();
+        this.state = {
+            tasks: []
+        };
     }
-
-    if(collatedTasksExist(selectedProject) && selectedProject) {
-        projectName = getCollatedTitle(collatedTasks, selectedProject).name
+    componentDidMount(tasks) {
+        const base_url = process.env.REACT_APP_BASE_URL
+        const email = "shahpreetk@gmail.com"
+        axios.get(`${base_url}/get_note/${email}`)
+            .then((res) => {
+                console.log(res.data)
+                tasks = res.data
+                this.setState({
+                    tasks
+                })
+            })
+            .catch(err => console.log(err))
     }
+    // const { selectedProject } = useSelectedProjectValue()
+    // const { projects } = useProjectsValue()
+    // const {tasks} = useTasks(selectedProject)
+    // const [tasks, setTasks] = useState('')
 
-    useEffect(()=>{
-        document.title = `${projectName}: Clarity`
-    })
+    // let projectName = ''
 
-    console.log('tasks',tasks)
+    // if (projects && selectedProject && !collatedTasksExist(selectedProject)) {
+    //     projectName = getTitle(projects, selectedProject).name
+    // }
 
-    return(
-        <div className='tasks' data-testid='tasks'>
-            <h2 data-testid='project-name'>{projectName}</h2>
+    // if (collatedTasksExist(selectedProject) && selectedProject) {
+    //     projectName = getCollatedTitle(collatedTasks, selectedProject).name
+    // }
 
-            <ul className='tasks__list'>
-                {
-                    tasks.map(task=>(
-                        <li key={`${task.id}`}>
-                            <Checkbox id={task.id} taskDesc={task.task}/>
-                            <span>{task.task}</span>
-                        </li>
-                    ))
-                }
-            </ul>
-                <AddTask/>
-        </div>
-    )
+    // useEffect((event) => {
+    //     document.title = `${projectName}: Clarity`
+    //     const base_url = process.env.REACT_APP_BASE_URL
+    //     const email = "shahpreetk@gmail.com"
+    //     axios.get(`${base_url}/get_note/${email}`)
+    //         .then(res => {
+    //             console.log(res.data)
+    //             setTasks(res.data)
+    //         })
+    //         .catch(err => console.log(err))
+
+    // if (JSON.stringify(allProjects) !== JSON.stringify(projects)){
+    //     setProjects(allProjects);
+    // });
+    render() {
+        const {tasks} = this.state
+        return (
+            <div className='tasks' data-testid='tasks'>
+                {/* <h2 data-testid='project-name'>{projectName}</h2> */}
+
+                <ul className='tasks__list'>
+                    {
+                        tasks.map(task => (
+                            <li key={`${task.id}`}>
+                                <Checkbox id={task.id} taskDesc={task.task} />
+                                <span>{task.text_journal}</span>
+                            </li>
+                        ))
+                    }
+                </ul>
+                <AddTask />
+            </div>
+        )
+    }
 }
 
 export default Tasks;
