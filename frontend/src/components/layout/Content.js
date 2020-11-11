@@ -2,11 +2,12 @@ import React from 'react';
 import Sidebar from './Sidebar';
 import Tasks from '../Tasks'
 
+
 const Content = () => {
-    return(
+    return (
         <section className='content'>
-            <Sidebar/>
-            <Tasks/>
+            <Sidebar />
+            <Tasks />
         </section>
     )
 }

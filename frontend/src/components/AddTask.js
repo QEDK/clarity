@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import { FaRegListAlt } from 'react-icons/fa';
 import moment from 'moment';
-import { firebase } from '../firebase'
+// import { firebase } from '../firebase'
 import { useSelectedProjectValue } from '../context';
 import ProjectOverlay from './ProjectOverlay';
 import TaskDate from './TaskDate';
+import axios from 'axios'
 
 const AddTask = ({ showAddTaskMain = true, shouldShowMain = false, showQuickAddTask, setShowQuickAddTask }) => {
     const [task, setTask] = useState('')
@@ -16,27 +17,54 @@ const AddTask = ({ showAddTaskMain = true, shouldShowMain = false, showQuickAddT
 
     const { selectedProject } = useSelectedProjectValue()
 
-    const addTask = () => {
-        const projectId = project || selectedProject;
-        let collatedDate = ''
+    // const addTask = () => {
+    // const projectId = project || selectedProject;
+    // let collatedDate = ''
 
-        if (projectId === 'TODAY') {
-            collatedDate = moment().format('DD/MM/YYYY')
-        } else if (projectId === 'NEXT_7') {
-            collatedDate = moment().add(7, 'days').format('DD/MM/YYYY')
+    // if (projectId === 'TODAY') {
+    //     collatedDate = moment().format('DD/MM/YYYY')
+    // } else if (projectId === 'NEXT_7') {
+    //     collatedDate = moment().add(7, 'days').format('DD/MM/YYYY')
+    // }
+
+    //     return (
+    //         task &&
+    //         projectId &&
+    //         firebase
+    //             .firestore()
+    //             .collection('tasks')
+    //             .add({
+    //                 archived: false,
+    //                 projectId,
+    //                 task,
+    //                 date: collatedDate || taskDate,
+    //                 userId: 'c422780d6077477594639749729eef36'
+    //             })
+    //             .then(() => {
+    //                 setTask('')
+    //                 setProject('')
+    //                 setShowMain('')
+    //                 setShowProjectOverlay(false)
+    //             })
+    //     )
+    // }
+
+    const addTask = (event) => {
+        const projectId = project || selectedProject;
+        let collatedDate = moment().format('DD/MM/YYYY')
+
+        var journal = {
+            "email": "shahpreetk@gmail.com",
+            "text_journal": task,
+            "time": collatedDate || taskDate
         }
+        const base_url = process.env.REACT_APP_BASE_URL
+        console.log(base_url)
         return (
-            task &&
-            projectId &&
-            firebase
-                .firestore()
-                .collection('tasks')
-                .add({
-                    archived: false,
-                    projectId,
-                    task,
-                    date: collatedDate || taskDate,
-                    userId: 'c422780d6077477594639749729eef36'
+            axios.post(`${base_url}/add_note`, journal)
+                .then(res => {
+                    console.log(res)
+                    console.log(res.data)
                 })
                 .then(() => {
                     setTask('')
@@ -44,6 +72,7 @@ const AddTask = ({ showAddTaskMain = true, shouldShowMain = false, showQuickAddT
                     setShowMain('')
                     setShowProjectOverlay(false)
                 })
+                .catch(err => console.log(err))
         )
     }
 
@@ -79,7 +108,7 @@ const AddTask = ({ showAddTaskMain = true, shouldShowMain = false, showQuickAddT
                     )}
                     <ProjectOverlay setProject={setProject} showProjectOverlay={showProjectOverlay} setShowProjectOverlay={setShowProjectOverlay} />
                     <TaskDate setTaskDate={setTaskDate} showTaskDate={showTaskDate} setShowTaskDate={setShowTaskDate} />
-                    <input className='add-task__content' aria-label='Journal Entry' data-testid='add-task-content' type='text' value={task} onChange={e => setTask(e.target.value)} />
+                    <textarea className='add-task__content' aria-label='Journal Entry' data-testid='add-task-content' type='text' value={task} onChange={e => setTask(e.target.value)} />
                     <button className='add-task__submit' data-testid='add-task'
                         onClick={() => showQuickAddTask ? addTask() && setShowQuickAddTask(false)
                             : addTask()}
