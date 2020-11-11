@@ -6,8 +6,6 @@ import Content from './components/layout/Content';
 import {ProjectsProvider, SelectedProjectProvider} from './context'
 
 function App() {
-  const base_url = process.env.REACT_APP_BASE_URL
-  console.log(base_url)
   return (
     <Router>
     <SelectedProjectProvider>
@@ -16,7 +14,6 @@ function App() {
       <Header />
       <Switch>
       <Route exact path='/' component={Content} />
-      {/* <Route exact path='/login' component={Login} /> */}
       </Switch>
     </main>
     </ProjectsProvider>
