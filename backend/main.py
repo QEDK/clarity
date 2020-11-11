@@ -1,12 +1,14 @@
 import databases
 import os
 import sqlalchemy
+import sys
 import urllib
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from ml.processtext import ProcessText
 from nanoid import generate
 from pydantic import BaseModel
+sys.path.append(os.path.relpath("../ml"))
+from processtext import ProcessText  # noqa
 
 db_server = os.environ.get("db_server", "localhost")
 db_server_port = urllib.parse.quote_plus(str(os.environ.get("db_server_port", "5432")))
@@ -31,6 +33,7 @@ user_journal = sqlalchemy.Table(
 engine = sqlalchemy.create_engine(db_url, pool_size=5, max_overflow=0)
 
 metadata.create_all(engine)
+nlp = ProcessText()  # noqa: init the ML model
 
 
 class Journal_in(BaseModel):
@@ -61,7 +64,6 @@ database = databases.Database(db_url)
 @app.on_event("startup")
 async def startup():
     await database.connect()
-    nlp = ProcessText()  # noqa: init the ML model
 
 
 @app.on_event("shutdown")
