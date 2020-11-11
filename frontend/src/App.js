@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Header from './components/layout/Header';
 import Content from './components/layout/Content';
-// import Login from './components/layout/Login';
 import {ProjectsProvider, SelectedProjectProvider} from './context'
 
 function App() {
