@@ -6,9 +6,12 @@ import urllib
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from nanoid import generate
+from pathlib import Path
 from pydantic import BaseModel
-sys.path.append(os.path.relpath("../ml"))
+sys.path.append(str(Path(__file__).resolve().parents[1].joinpath("ml")))
 from processtext import ProcessText  # noqa
+
+nlp = ProcessText()  # noqa: init the ML model
 
 db_server = os.environ.get("db_server", "localhost")
 db_server_port = urllib.parse.quote_plus(str(os.environ.get("db_server_port", "5432")))
@@ -34,7 +37,6 @@ user_journal = sqlalchemy.Table(
 engine = sqlalchemy.create_engine(db_url, pool_size=6, max_overflow=0)
 
 metadata.create_all(engine)
-nlp = ProcessText()  # noqa: init the ML model
 
 
 class Journal_in(BaseModel):
