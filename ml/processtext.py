@@ -7,6 +7,7 @@ import re
 import spacy
 import sys
 import tensorflow as tf
+from pathlib import Path
 from sklearn.feature_extraction.text import TfidfVectorizer
 from spacy import displacy
 from spacy.matcher import Matcher
@@ -19,11 +20,13 @@ warnings.filterwarnings("ignore", category=UserWarning)
 class ProcessText():
     def __init__(self):
         self.nlp = spacy.load("en_core_web_md")
-        self.model = tf.keras.models.load_model("model.h5")
+        self.model = tf.keras.models.load_model(Path(__file__).parents[0].joinpath("model.h5"))
         self.uncontracter = RegexpReplacer()
         self.unpunctuator = re.compile(r"[!#$%&'()*+,-./:;<=>?@[\]^_`{|}~]")
         self.tokenizer = keras.preprocessing.text.Tokenizer(num_words=None)
-        self.tokenizer.fit_on_texts(list(np.genfromtxt("vocab.txt", dtype="str", delimiter="\n")))
+        self.tokenizer.fit_on_texts(list(np.genfromtxt(
+            Path(__file__).parents[0].joinpath("vocab.txt"), dtype="str", delimiter="\n"
+        )))
         self.sentiments = [
             "empty",
             "sadness",
