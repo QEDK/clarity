@@ -27,10 +27,11 @@ user_journal = sqlalchemy.Table(
     sqlalchemy.Column("email", sqlalchemy.String),
     sqlalchemy.Column("text_journal", sqlalchemy.String),
     sqlalchemy.Column("journal_url", sqlalchemy.String),
-    sqlalchemy.Column("time", sqlalchemy.String)
+    sqlalchemy.Column("time", sqlalchemy.String),
+    sqlalchemy.Column("model_output", sqlalchemy.String)
 )
 
-engine = sqlalchemy.create_engine(db_url, pool_size=5, max_overflow=0)
+engine = sqlalchemy.create_engine(db_url, pool_size=6, max_overflow=0)
 
 metadata.create_all(engine)
 nlp = ProcessText()  # noqa: init the ML model
@@ -39,7 +40,6 @@ nlp = ProcessText()  # noqa: init the ML model
 class Journal_in(BaseModel):
     email: str
     text_journal: str
-    journal_url: str
     time: str
 
 
@@ -49,6 +49,7 @@ class Journal(BaseModel):
     text_journal: str
     journal_url: str
     time: str
+    model_output: str
 
 
 app = FastAPI()
@@ -79,8 +80,10 @@ async def add_note(journal: Journal_in):
         url = generate(size=36)
     else:
         url = user.get("journal_url")
+    model_response = await nlp.process(journal.text_journal)
     query = user_journal.insert().values(email=journal.email, text_journal=journal.text_journal,
-                                         journal_url=url, time=journal.time)
+                                         journal_url=url, time=journal.time,
+                                         model_output=model_response)
     last_record_id = await database.execute(query)
     return {** journal.dict(), "id": last_record_id}
 
