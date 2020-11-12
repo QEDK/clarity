@@ -18,9 +18,10 @@ const AddTask = ({ showAddTaskMain = true, shouldShowMain = false, showQuickAddT
     const { selectedProject } = useSelectedProjectValue()
 
     const addTask = (event) => {
-        const projectId = project || selectedProject;
+        var projectId = project || selectedProject;
         let collatedDate = moment().format('DD/MM/YYYY')
-
+        projectId = ""
+        console.log(projectId)
         var journal = {
             "email": "coderaji13@gmail.com",
             "text_journal": task,
@@ -44,7 +45,6 @@ const AddTask = ({ showAddTaskMain = true, shouldShowMain = false, showQuickAddT
                 .catch(err => console.log(err))
         )
     }
-    console.log(task)
     return (
         <div
             className={showQuickAddTask ? 'add-task add-task__overlay' : 'add-task'} data-testid='add-task-comp'>

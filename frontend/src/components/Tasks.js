@@ -11,7 +11,7 @@ class Tasks extends Component {
     constructor() {
         super();
         this.state = {
-            tasks: []
+            tasks: [],
         };
     }
     componentDidMount(tasks) {
@@ -20,30 +20,37 @@ class Tasks extends Component {
         const email = "coderaji13@gmail.com"
         axios.get(`${base_url}/get_note/${email}`)
             .then((res) => {
-                console.log(res.data)
+                // console.log(res.data)
                 tasks = res.data
+                // model_output = JSON.parse(tasks)
                 this.setState({
-                    tasks
+                    tasks,
                 })
+                // console.table(model_output.ents)
             })
             .catch(err => console.log(err))
     }
 
     render() {
-        const {tasks} = this.state
+        const { tasks } = this.state
         return (
             <div className='tasks' data-testid='tasks'>
 
                 <ul className='tasks__list'>
                     {
-                        tasks.map(task => (
-                            <li key={`${task.id}`}>
-                                {/* <Checkbox id={task.id} taskDesc={task.task} /> */}
-                                <span>{task.text_journal}
-                                <br/>
-                                {task.model_output}</span>
-                            </li>
-                        ))
+                        tasks.map((task) => {
+
+                            let model = JSON.parse(JSON.parse(JSON.stringify(task.model_output)))
+                            console.log("model sadness = ", model.sentiment.mood.sadness)
+                            return (
+                                <li key={`${task.id}`}>
+                                    <span>{task.text_journal}
+                                        <br />
+                                        {model.sentiment.mood.sadness}
+                                    </span>
+                                </li>
+                            )
+                        })
                     }
                 </ul>
                 <AddTask />
