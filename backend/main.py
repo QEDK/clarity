@@ -14,12 +14,16 @@ from processtext import ProcessText  # noqa
 nlp = ProcessText()  # noqa: init the ML model
 
 db_server = os.environ.get("db_server", "localhost")
-db_server_port = urllib.parse.quote_plus(str(os.environ.get("db_server_port", "5432")))
+db_server_port = os.environ.get("db_server_port", "5432")
 # Credentials of the PostgreSQL instance:
-db_name = os.environ.get("db_name", "fastapidbname")
-db_username = urllib.parse.quote_plus(str(os.environ.get("db_username", "postgres")))
-db_password = urllib.parse.quote_plus(str(os.environ.get("db_password", "password")))
+db_name = urllib.parse.quote_plus(os.environ.get("db_name", "postgres"))
+db_username = urllib.parse.quote_plus(os.environ.get("db_username", "postgres"))
+db_password = urllib.parse.quote_plus(os.environ.get("db_password", "password"))
+
 db_url = f"postgresql://{db_username}:{db_password}@{db_server}:{db_server_port}/{db_name}"
+
+if os.environ.get("cloud_run_instance"):
+    db_url = os.environ["db_uri"]
 
 metadata = sqlalchemy.MetaData()
 
@@ -64,6 +68,7 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
+# Even though db_url is mentioned, asyncpg will give precedence to environment variables
 database = databases.Database(db_url)
 
 
