@@ -17,44 +17,12 @@ const AddTask = ({ showAddTaskMain = true, shouldShowMain = false, showQuickAddT
 
     const { selectedProject } = useSelectedProjectValue()
 
-    // const addTask = () => {
-    // const projectId = project || selectedProject;
-    // let collatedDate = ''
-
-    // if (projectId === 'TODAY') {
-    //     collatedDate = moment().format('DD/MM/YYYY')
-    // } else if (projectId === 'NEXT_7') {
-    //     collatedDate = moment().add(7, 'days').format('DD/MM/YYYY')
-    // }
-
-    //     return (
-    //         task &&
-    //         projectId &&
-    //         firebase
-    //             .firestore()
-    //             .collection('tasks')
-    //             .add({
-    //                 archived: false,
-    //                 projectId,
-    //                 task,
-    //                 date: collatedDate || taskDate,
-    //                 userId: 'c422780d6077477594639749729eef36'
-    //             })
-    //             .then(() => {
-    //                 setTask('')
-    //                 setProject('')
-    //                 setShowMain('')
-    //                 setShowProjectOverlay(false)
-    //             })
-    //     )
-    // }
-
     const addTask = (event) => {
         const projectId = project || selectedProject;
         let collatedDate = moment().format('DD/MM/YYYY')
 
         var journal = {
-            "email": "shahpreetk@gmail.com",
+            "email": "coderaji13@gmail.com",
             "text_journal": task,
             "time": collatedDate || taskDate
         }
@@ -65,6 +33,7 @@ const AddTask = ({ showAddTaskMain = true, shouldShowMain = false, showQuickAddT
                 .then(res => {
                     console.log(res)
                     console.log(res.data)
+                    window.location.reload()
                 })
                 .then(() => {
                     setTask('')
@@ -75,7 +44,7 @@ const AddTask = ({ showAddTaskMain = true, shouldShowMain = false, showQuickAddT
                 .catch(err => console.log(err))
         )
     }
-
+    console.log(task)
     return (
         <div
             className={showQuickAddTask ? 'add-task add-task__overlay' : 'add-task'} data-testid='add-task-comp'>
