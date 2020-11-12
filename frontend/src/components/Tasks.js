@@ -1,5 +1,5 @@
-import React, { useState, useEffect, Component } from 'react'
-import Checkbox from './Checkbox'
+import React, { Component } from 'react'
+// import Checkbox from './Checkbox'
 // import {useTasks} from '../hooks'
 // import { collatedTasks } from '../constants'
 // import { getTitle, getCollatedTitle, collatedTasksExist } from '../helpers'
@@ -17,7 +17,7 @@ class Tasks extends Component {
     componentDidMount(tasks) {
         document.title = 'Clarity'
         const base_url = process.env.REACT_APP_BASE_URL
-        const email = "shahpreetk@gmail.com"
+        const email = "coderaji13@gmail.com"
         axios.get(`${base_url}/get_note/${email}`)
             .then((res) => {
                 console.log(res.data)
@@ -39,7 +39,9 @@ class Tasks extends Component {
                         tasks.map(task => (
                             <li key={`${task.id}`}>
                                 {/* <Checkbox id={task.id} taskDesc={task.task} /> */}
-                                <span>{task.text_journal}</span>
+                                <span>{task.text_journal}
+                                <br/>
+                                {task.model_output}</span>
                             </li>
                         ))
                     }
