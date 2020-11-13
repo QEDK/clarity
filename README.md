@@ -13,13 +13,16 @@ It's simple! Follow these steps:
 3. Write down your emotions truly and that's it!
 4. Click on submit and it will be stored as a little secret between us.
 5. Want to know about your state of your mind few days back? Don't worry we will show you.
-6. What to share it with someone else or your therapist? Just give them your super secret link!
+6. Want to share it with someone else or your therapist? We have that too!
 
 ## 🌐 Where can I use it?
 Find us on [clarity-frontend.herokuapp.com](https://clarity-frontend.herokuapp.com)!
 
+## 👨‍🏭 Who are we?
+This project was built by Pod 1.1.3 Team 3, [Ajitesh Panda](https://github.com/Ajitesh13), [Preet Shah](https://github.com/shahpreetk), [Sakshi Rambhia](https://github.com/Sakshi16) and [Ankit Maity](https://github.com/QEDK).
+
 ## 💻 Tech stack
-`clarity` has a React Native frontend ⚛️ hosted with Heroku, and a FastAPI backend backed by PostgreSQL hosted on Google Cloud Platform. The UI is based on React, while the Cloud Run backend uses `SQLAlchemy` and `asyncpg` for communicating with Cloud SQL. 💽
+`clarity` has a ReactJS frontend ⚛️ hosted with Heroku, and a FastAPI backend backed by PostgreSQL hosted on Google Cloud Platform. The UI is based on React, while the Cloud Run backend uses `SQLAlchemy` and `asyncpg` for communicating with Cloud SQL. 💽
 
 ## 👨‍💻 How do I contribute?
 - To get more detailed documentation, please check out our project's [wiki](https://github.com/QEDK/clarity/wiki). 📖
@@ -80,7 +83,7 @@ $ npm start
 And the server should be up and running on http://localhost:3000! 🚀
 
 ### ‼️ Just tell me about the ML!
-Not to fret, the entirety of `ml` module is documented at the respective [README](https://github.com/QEDK/clarity/blob/master/ml/README.md) (since it's quite large) and some more on the wiki. What you need to know - clone the repo, copy the folder, use it as an API. Et voilà! 
+Not to fret, the entirety of `ml` module is documented at the respective [README](https://github.com/QEDK/clarity/blob/master/ml/README.md) (since it's quite large) and some more on the wiki. What you need to know - clone the repo, copy the folder, use it as an API. Et voilà!
 
 ### 🧹 Linting
 All Python scripts are linted using [flake8](https://flake8.pycqa.org). To lint your files, simply install and run the `flake8` command in the project root and it should pick up the configuration automatically. GitHub Actions will automatically check your PR against `flake8` once submitted and provide helpful annotations in case of logical or stylistic errors. ℹ️
@@ -90,7 +93,7 @@ All Python scripts are linted using [flake8](https://flake8.pycqa.org). To lint 
 * Add analysis of more features to give more information on emotions expressed. 🤗
 * Provide Spotify recommendations according to emotion analysis. 💬
 
-Where we want to be: 
+Where we want to be:
 * An integrated platform for therapists, patients and people willing to track their mental state. 🧑🏿‍🤝‍🧑🏿
 
 ## 📜 License
