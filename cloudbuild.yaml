@@ -19,4 +19,4 @@
    - '--platform'
    - 'managed'
  images:
- - 'gcr.io/$PROJECT_ID/asia-south1:$COMMIT_SHA'
+ - 'gcr.io/$PROJECT_ID/clarity-294523:$COMMIT_SHA'

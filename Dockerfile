@@ -16,4 +16,4 @@ RUN pip install -r backend/requirements.txt
 EXPOSE 8080
 
 # Run uvicorn server on all interfaces, port 8080
-CMD ["uvicorn", "backend.main:app", "--workers=4", "--host=0.0.0.0", "--port=8080"]
+CMD ["uvicorn", "backend.main:app", "--workers=2", "--host=0.0.0.0", "--port=8080"]
