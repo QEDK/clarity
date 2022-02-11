@@ -10,7 +10,7 @@
     "dotenv": "^8.2.0",
     "firebase": "^8.0.1",
     "moment": "^2.29.1",
-    "node-sass": "^4.14.1",
+    "node-sass": "^7.0.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-google-login": "^5.1.22",
